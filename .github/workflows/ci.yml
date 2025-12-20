@@ -22,9 +22,15 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
+          - "4.0.0-preview3"
           - "3.4"
           - "3.3"
           - "3.2"
+        rack:
+          - "~> 2.0"
+          - "~> 3.0"
+    env:
+      RACK_VERSION_CONSTRAINT: ${{matrix.rack}}
     steps:
       - uses: actions/checkout@v1
       - name: Install package dependencies
