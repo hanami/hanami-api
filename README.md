@@ -5,17 +5,17 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-api.svg)](https://badge.fury.io/rb/hanami-api)
-[![CI](https://github.com/hanami/api/actions/workflows/ci.yml/badge.svg)](https://github.com/hanami/api/actions?query=workflow%3Aci+branch%3Amain)
+[![CI](https://github.com/hanami/hanami-api/actions/workflows/ci.yml/badge.svg)](https://github.com/hanami/hanami-api/actions?query=workflow%3Aci+branch%3Amain)
 [![Test Coverage](https://codecov.io/gh/hanami/api/branch/main/graph/badge.svg)](https://codecov.io/gh/hanami/api)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/api?project=Bundler)
 
 ## Contact
 
-* Home page: http://hanamirb.org
-* Mailing List: http://hanamirb.org/mailing-list
-* API Doc: http://rubydoc.info/gems/hanami-api
-* Bugs/Issues: https://github.com/hanami/api/issues
-* Chat: http://chat.hanamirb.org
+* Home page: https://hanamirb.org
+* Forum: https://discourse.hanakai.org
+* Chat: https://discord.gg/naQApPAsZB
+* API Doc: https://rubydoc.info/gems/hanami-api
+* Bugs/Issues: https://github.com/hanami/hanami-api/issues
 
 ## Installation
 
@@ -300,7 +300,7 @@ get "/" do
 end
 ```
 
-Set HTTP status
+Set HTTP response headers
 
 ```ruby
 get "/" do
@@ -390,7 +390,7 @@ get "/legacy" do
 end
 ```
 
-It sets a Rack response: `[301, {"Location" => "/new"}, ["Moved Permanently"]]`
+It sets a Rack response: `[301, {"Location" => "/dashboard"}, ["Moved Permanently"]]`
 
 ```ruby
 get "/legacy" do
@@ -400,7 +400,7 @@ get "/legacy" do
 end
 ```
 
-It sets a Rack response: `[302, {"Location" => "/new"}, ["Moved"]]`
+It sets a Rack response: `[302, {"Location" => "/dashboard"}, ["Found"]]`
 
 #### back
 
@@ -552,8 +552,6 @@ example of streaming JSON data:
 
 ```ruby
 scope "stream" do
-  use ::Rack::Chunked
-
   get "/data" do
     Enumerator.new do |yielder|
       data = %w[a b c]
@@ -582,8 +580,8 @@ end
 
 Note:
 
-* Returning an `Enumerator` will also work without `Rack::Chunked`, it just
-  won't stream but return the whole body at the end instead.
+* Rack 3 leaves chunked transfer encoding to the web server, so no middleware
+  is needed.
 * Data pushed to `yielder` MUST be a `String`.
 * Streaming does not work with WEBrick as it buffers its response. We recommend
   using `puma`, though you may find success with other servers.
@@ -598,7 +596,7 @@ $ curl --raw -i http://localhost:2300/stream/data
 Rack ignores request bodies unless they come from a form submission.
 If you have an endpoint that accepts JSON, the request payload isn’t available in `params`.
 
-In order to parse JSON payload and make it avaliable in `params`, you should add the following lines to `config.ru`:
+In order to parse JSON payload and make it available in `params`, you should add the following lines to `config.ru`:
 
 ```ruby
 # frozen_string_literal: true
@@ -668,8 +666,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hanami/api.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hanami/hanami-api.
 
 ## Copyright
 
-Copyright © 2014–2024 Hanami Team – Released under MIT License.
+Copyright © 2014–2026 Hanami Team – Released under MIT License.
